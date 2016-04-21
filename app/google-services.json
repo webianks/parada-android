@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_id": "spheric-passkey-116221",
+    "project_number": "670858072510",
+    "name": "Parada"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:670858072510:android:d3e13eda620a5332",
+        "client_id": "android:br.com.mossteam.parada",
+        "client_type": 1,
+        "android_client_info": {
+          "package_name": "br.com.mossteam.parada",
+          "certificate_hash": []
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "670858072510-kbol2109ur3deu81b60qnfsaid8quvhd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.com.mossteam.parada",
+            "certificate_hash": "2BD67B4FAFD71BC8AEEF96568A7AC4A0CD3003E7"
+          }
+        },
+        {
+          "client_id": "670858072510-k0hir4nhdut873haq4c15ae48nrav24t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "cloud_messaging_service": {
+          "status": 1,
+          "apns_config": []
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "google_signin_service": {
+          "status": 2
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "client_info": [],
+  "ARTIFACT_VERSION": "1"
+}

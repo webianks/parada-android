@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">@color/amber</color>
+    <color name="colorPrimaryDark">@color/amberDark</color>
+    <color name="colorAccent">@color/redAccent</color>
+    
+    <color name="amber">#FFC107</color>
+    <color name="amberDark">#FFA000</color>
+    <color name="blueAccent">#448AFF</color>
+    <color name="redAccent">#FF5252</color>
+</resources>
