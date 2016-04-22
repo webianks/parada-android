@@ -188,14 +188,12 @@ public class MainActivity extends AppCompatActivity
                     QueryRow row = rowIterator.next();
                     Document document = s.getDocument(row.getDocumentId());
                     jsonArray.put(i, new JSONObject(document.getProperties()));
-                    Log.d("json", document.getProperties().toString());
                 }
             } catch (CouchbaseLiteException e) {
-                e.printStackTrace();
+                Log.d("couchbase", e.toString());
             } catch (JSONException e) {
-                e.printStackTrace();
+                Log.d("couchbase", e.toString());
             }
-            Log.d("json", jsonArray.toString());
             return jsonArray;
         }
     }

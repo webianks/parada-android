@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_add_a_photo">Adicionar uma foto</string>
+    <string name="action_edit_location"></string>
+    <string name="bus_code">Código do ônibus: </string>
+    <string name="action_send">Enviar</string>
+    <string name="action_settings">Configurações</string>
+    <string name="title_activity_new_report">Nova denúncia</string>
+    <string name="title_activity_maps">Mapa</string>
+</resources>

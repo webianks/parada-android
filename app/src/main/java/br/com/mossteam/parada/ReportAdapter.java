@@ -1,7 +1,9 @@
 package br.com.mossteam.parada;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,14 +60,29 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
         try {
             holder.mTextView.setText(reports.getJSONObject(position).getString("bus_code"));
             Locale.setDefault(new Locale("pt", "BR"));
-            final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM",
-                    Locale.getDefault());
+            final SimpleDateFormat dateFormat = new SimpleDateFormat
+                    ("dd/MM hh:mm", Locale.getDefault());
             Date date = new Date(Long.valueOf(reports
                     .getJSONObject(position).getString("date")));
             holder.mTextView1.setText(dateFormat.format(date));
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        holder.mTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, ReportActivity.class);
+                try {
+                    intent.putExtra("_id", reports.getJSONObject(position)
+                            .getString("_id"));
+                    Log.d("json", reports.getJSONObject(position).getString
+                            ("_, id"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
