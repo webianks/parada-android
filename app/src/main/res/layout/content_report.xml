@@ -10,8 +10,8 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="br.com.mossteam.parada.NewReportActivity"
-    tools:showIn="@layout/activity_new_report">
+    tools:context="br.com.mossteam.parada.ReportActivity"
+    tools:showIn="@layout/activity_report">
 
     <fragment
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -19,12 +19,14 @@
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="300dp" />
+        android:layout_height="300dp"
+        android:paddingBottom="16dp" />
 
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/map">
+        android:layout_below="@+id/map"
+        android:paddingTop="16dp">
 
         <TableRow
             android:layout_width="match_parent"
@@ -40,6 +42,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingLeft="4dp"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:id="@+id/bus_code"/>
         </TableRow>
@@ -58,6 +61,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingLeft="4dp"
                 android:id="@+id/date"
                 android:inputType="date" />
         </TableRow>
