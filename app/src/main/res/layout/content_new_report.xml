@@ -25,7 +25,27 @@
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/map">
+        android:layout_below="@+id/map"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="@string/date"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/date"
+                android:inputType="date" />
+        </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
@@ -36,7 +56,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textStyle="bold"
-                android:text="@string/bus_code"/>
+                android:text="@string/bus_code" />
 
             <EditText
                 android:layout_width="fill_parent"
@@ -47,20 +67,20 @@
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:visibility="invisible">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="Date: "
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:text="@string/description" />
 
-            <TextView
+            <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/date"
-                android:inputType="date" />
+                android:id="@+id/description" />
         </TableRow>
     </TableLayout>
 </RelativeLayout>

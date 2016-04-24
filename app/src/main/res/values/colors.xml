@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">@color/brown</color>
-    <color name="colorPrimaryDark">@color/brownDark</color>
+    <color name="colorPrimary">@color/indigo</color>
+    <color name="colorPrimaryDark">@color/indigoDark</color>
     <color name="colorAccent">@color/deepOrange</color>
     
     <color name="amber">#FFC107</color>

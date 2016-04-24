@@ -7,4 +7,5 @@
     <string name="action_settings">Configurações</string>
     <string name="title_activity_new_report">Nova denúncia</string>
     <string name="title_activity_maps">Mapa</string>
+    <string name="date">Data:</string>
 </resources>
