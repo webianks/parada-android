@@ -39,4 +39,7 @@
     <string name="help">Help</string>
     <string name="about_us">About Us</string>
     <string name="support">Support</string>
+
+    <string name="facebook_app_id">1712982438977300</string>
+    <string name="fb_login_protocol_scheme">fb1712982438977300</string>
 </resources>

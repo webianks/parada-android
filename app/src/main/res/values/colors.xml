@@ -3,7 +3,7 @@
     <color name="colorPrimary">@color/indigo</color>
     <color name="colorPrimaryDark">@color/indigoDark</color>
     <color name="colorAccent">@color/deepOrange</color>
-    
+
     <color name="amber">#FFC107</color>
     <color name="amberDark">#FFA000</color>
     <color name="blueAccent">#448AFF</color>
@@ -16,4 +16,6 @@
     <color name="brownDark">#5D4037</color>
 
     <color name="deepOrange">#FF5722</color>
+
+    <color name="black_overlay">#66000000</color>
 </resources>
