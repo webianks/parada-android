@@ -3,8 +3,6 @@ package br.com.mossteam.parada;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -15,11 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import com.couchbase.lite.CouchbaseLiteException;
 import com.couchbase.lite.Document;
-import com.couchbase.lite.Query;
-import com.couchbase.lite.QueryEnumerator;
-import com.couchbase.lite.QueryRow;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -27,21 +21,17 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
 public class ReportActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    private LocationManager mLocationManager;
-    private Location mLocation;
     private JSONObject report;
 
     @Override
@@ -70,7 +60,7 @@ public class ReportActivity extends AppCompatActivity implements OnMapReadyCallb
             Date date = new Date(Long.valueOf(report.getString("date")));
             Locale.setDefault(new Locale("pt", "BR"));
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy " +
-                    "hh:mm:ss", Locale.getDefault());
+                    "HH:mm:ss", Locale.getDefault());
             TextView textView = (TextView) findViewById(R.id.date);
             textView.setText(dateFormat.format(date));
             textView = (TextView) findViewById(R.id.bus_code);
@@ -82,7 +72,6 @@ public class ReportActivity extends AppCompatActivity implements OnMapReadyCallb
         SupportMapFragment mapFragment = (SupportMapFragment)
                 getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
     }
 
     @Override
@@ -106,6 +95,8 @@ public class ReportActivity extends AppCompatActivity implements OnMapReadyCallb
         int id = item.getItemId();
 
         switch (id) {
+            case R.id.action_settings:
+                break;
             default:
                 // TODO: implement error handling
                 break;
@@ -117,15 +108,12 @@ public class ReportActivity extends AppCompatActivity implements OnMapReadyCallb
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        mLocation = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission
                 .ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: ask permission.
             return;
         }
-        mMap.setMyLocationEnabled(true);
 
         try {
             LatLng latLng = new LatLng(

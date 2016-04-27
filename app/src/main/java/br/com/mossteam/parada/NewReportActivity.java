@@ -51,7 +51,7 @@ public class NewReportActivity extends AppCompatActivity implements OnMapReadyCa
         final Date date = new Date();
         Locale.setDefault(new Locale("pt", "BR"));
         final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy " +
-                "hh:mm:ss", Locale.getDefault());
+                "HH:mm:ss", Locale.getDefault());
         final TextView textView = (TextView) findViewById(R.id.date);
         textView.setText(dateFormat.format(date));
 

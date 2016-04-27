@@ -29,6 +29,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.concurrent.ExecutionException;
 
@@ -118,9 +121,23 @@ public class MainActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (id) {
+            case R.id.action_sort:
+                ArrayList<Long> jsonValues = new ArrayList<Long>();
+                for (int i = 0; i < reports.length(); i++) {
+                    try {
+                        jsonValues.add(reports.getJSONObject(i).getLong("date"));
+                        Collections.sort(jsonValues);
+                    } catch (JSONException e) {
+                        Log.d("json", e.toString());
+                    }
+                }
+                reports = new JSONArray(jsonValues);
+                mAdapter.setReports(reports);
+                mAdapter.notifyDataSetChanged();
+                break;
+            default:
+                break;
         }
 
         return super.onOptionsItemSelected(item);
@@ -178,6 +195,29 @@ public class MainActivity extends AppCompatActivity
                 Log.d("couchbase", e.toString());
             }
             return jsonArray;
+        }
+    }
+
+    class JSONComparator implements Comparator<JSONObject> {
+
+        @Override
+        public int compare(JSONObject a, JSONObject b) {
+            long valA = 0;
+            long valB = 0;
+
+            try {
+                valA = a.getLong("date");
+                valB = b.getLong("date");
+            } catch (JSONException e) {
+                Log.d("json", e.toString());
+            }
+
+            if(valA > valB)
+                return 1;
+            else if(valA < valB)
+                return -1;
+            else
+                return 0;
         }
     }
 }

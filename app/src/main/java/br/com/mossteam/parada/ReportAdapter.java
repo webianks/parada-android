@@ -61,7 +61,7 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
             holder.mTextView.setText(reports.getJSONObject(position).getString("bus_code"));
             Locale.setDefault(new Locale("pt", "BR"));
             final SimpleDateFormat dateFormat = new SimpleDateFormat
-                    ("dd/MM hh:mm", Locale.getDefault());
+                    ("dd/MM HH:mm", Locale.getDefault());
             Date date = new Date(Long.valueOf(reports
                     .getJSONObject(position).getString("date")));
             holder.mTextView1.setText(dateFormat.format(date));
