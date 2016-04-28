@@ -25,23 +25,32 @@ import com.couchbase.lite.Document;
 import com.couchbase.lite.Query;
 import com.couchbase.lite.QueryEnumerator;
 import com.couchbase.lite.QueryRow;
+import com.facebook.AccessToken;
+import com.facebook.AccessTokenTracker;
+import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
 import com.facebook.Profile;
+import com.facebook.ProfileTracker;
 import com.facebook.login.LoginManager;
+import com.facebook.login.widget.ProfilePictureView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private AccessToken token;
+    private AccessTokenTracker tracker;
+    private CallbackManager callbackManager;
     private JSONArray reports;
     private Profile profile;
+    private ProfileTracker profileTracker;
     private RecyclerView mRecyclerView;
     private ReportAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -52,11 +61,31 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
 
         FacebookSdk.sdkInitialize(MainActivity.this);
+        callbackManager = CallbackManager.Factory.create();
+        ArrayList<String> permissions  = new ArrayList<String>();
+        permissions.add("public_profile");
+        permissions.add("email");
         LoginManager.getInstance().logInWithReadPermissions(
-                MainActivity.this,
-                Arrays.asList("public_profile")
-        );
+                MainActivity.this, permissions);
+        tracker = new AccessTokenTracker() {
+            @Override
+            protected void onCurrentAccessTokenChanged(
+                    AccessToken oldAccessToken,
+                    AccessToken currentAccessToken) {
+            }
+        };
+        profileTracker = new ProfileTracker() {
+            @Override
+            protected void onCurrentProfileChanged(
+                    Profile oldProfile,
+                    Profile currentProfile) {
+
+            }
+        };
         profile = Profile.getCurrentProfile();
+        token = AccessToken.getCurrentAccessToken();
+        /*SyncManager s = new SyncManager(MainActivity.this);
+        s.push(token.getToken());*/
     }
 
     @Override
@@ -87,9 +116,8 @@ public class MainActivity extends AppCompatActivity
 
         if(profile != null) {
             View headerView = navigationView.getHeaderView(0);
-            //ImageView imageView = (ImageView) headerView.findViewById(R.id.userProfilePic);
-            //Uri uri = profile.getProfilePictureUri(64, 64);
-            //imageView.setImageURI(uri);
+            ProfilePictureView pictureView = (ProfilePictureView) headerView.findViewById(R.id.user_profile_pic);
+            pictureView.setProfileId(profile.getId());
             TextView textView = (TextView) headerView.findViewById(R.id.user_name);
             textView.setText(profile.getName());
         }
@@ -120,6 +148,13 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        /*tracker.stopTracking();
+        profileTracker.stopTracking();*/
     }
 
     @Override
@@ -167,12 +202,11 @@ public class MainActivity extends AppCompatActivity
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
+        Intent intent;
 
         switch (id) {
-            case R.id.nav_profile:
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(intent);
-                return true;
+            /*case R.id.nav_profile:
+                return true;*/
             case R.id.nav_settings:
                 intent = new Intent(MainActivity.this, SettingsActivity.class);
                 startActivity(intent);
@@ -180,6 +214,18 @@ public class MainActivity extends AppCompatActivity
             default:
                 return true;
         }
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        /*callbackManager.onActivityResult(requestCode, resultCode, data);*/
     }
 
     public void reloadTimeline() {

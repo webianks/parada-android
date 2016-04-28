@@ -1,20 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu
     xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
+
+<!--    <item
         android:id="@+id/nav_profile"
-        android:title="@string/profile" />
+        android:title="@string/profile"
+        android:icon="@drawable/ic_account_circle_black_48dp" />-->
 
     <item
         android:id="@+id/nav_settings"
-        android:title="@string/settings" />
+        android:title="@string/settings"
+        android:icon="@drawable/ic_settings_black_48dp" />
     <item
         android:id="@+id/nav_send_feedback"
-        android:title="@string/send_feedback" />
+        android:title="@string/send_feedback"
+        android:icon="@drawable/ic_feedback_black_48dp" />
     <item
         android:id="@+id/nav_help"
-        android:title="@string/help" />
-    <item
+        android:title="@string/help"
+        android:icon="@drawable/ic_help_black_48dp" />
+    <!--<item
         android:id="@+id/nav_about_us"
-        android:title="@string/about_us" />
+        android:title="@string/about_us" />-->
 </menu>

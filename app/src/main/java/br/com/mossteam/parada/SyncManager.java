@@ -8,8 +8,14 @@ import com.couchbase.lite.Database;
 import com.couchbase.lite.Document;
 import com.couchbase.lite.Manager;
 import com.couchbase.lite.android.AndroidContext;
+import com.couchbase.lite.auth.Authenticator;
+import com.couchbase.lite.auth.AuthenticatorFactory;
+import com.couchbase.lite.auth.BasicAuthenticator;
+import com.couchbase.lite.replicator.Replication;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.HashMap;
 
 /**
@@ -23,6 +29,7 @@ public class SyncManager {
     private Database database = null;
     private Manager manager = null;
     private Context context;
+    private URL url;
 
     public SyncManager(Context context) {
         this.context = context;
@@ -68,5 +75,22 @@ public class SyncManager {
         } catch (CouchbaseLiteException e) {
             Log.e("couchbase", e.toString());
         }
+    }
+    public void push(String token) {
+        try {
+            url = new URL("https://parada.mossteam.com.br");
+        } catch (MalformedURLException e) {
+            Log.d("couchbase", e.toString());
+        }
+        Replication push = getDatabase().createPushReplication(url);
+        Authenticator auth = AuthenticatorFactory.createFacebookAuthenticator(token);
+        push.setAuthenticator(auth);
+        push.addChangeListener(new Replication.ChangeListener() {
+            @Override
+            public void changed(Replication.ChangeEvent event) {
+
+            }
+        });
+        push.start();
     }
 }

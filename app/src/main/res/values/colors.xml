@@ -2,17 +2,19 @@
 <resources>
     <color name="colorPrimary">@color/indigo</color>
     <color name="colorPrimaryDark">@color/indigoDark</color>
-    <color name="colorAccent">@color/redAccent</color>
+    <color name="colorAccent">@color/redAccent700</color>
 
     <color name="amber">#FFC107</color>
     <color name="amberDark">#FFA000</color>
 
     <color name="blueAccent">#448AFF</color>
 
-    <color name="redAccent">#FF5252</color>
+    <color name="redAccent200">#FF5252</color>
+    <color name="redAccent700">#D50000</color>
 
     <color name="indigo">#3F51B5</color>
     <color name="indigoDark">#303F9F</color>
+    <color name="indigoAccentA700">#304FFE</color>
 
     <color name="brown">#795548</color>
     <color name="brownDark">#5D4037</color>
