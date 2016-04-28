@@ -9,7 +9,6 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v4.widget.TextViewCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -26,28 +25,21 @@ import com.couchbase.lite.Document;
 import com.couchbase.lite.Query;
 import com.couchbase.lite.QueryEnumerator;
 import com.couchbase.lite.QueryRow;
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
 import com.facebook.FacebookSdk;
 import com.facebook.Profile;
 import com.facebook.login.LoginManager;
-import com.facebook.login.LoginResult;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private CallbackManager callbackManager;
     private JSONArray reports;
     private Profile profile;
     private RecyclerView mRecyclerView;
@@ -59,16 +51,11 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        /*
-         * Initializing Facebook's SDK.
-         *
-         * Later used for Login and report sharing.
-         */
         FacebookSdk.sdkInitialize(MainActivity.this);
-        callbackManager = CallbackManager.Factory.create();
-        LoginManager.getInstance().logInWithReadPermissions(MainActivity
-                .this, Arrays.asList("public_profile"));
-
+        LoginManager.getInstance().logInWithReadPermissions(
+                MainActivity.this,
+                Arrays.asList("public_profile")
+        );
         profile = Profile.getCurrentProfile();
     }
 
@@ -98,8 +85,14 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        TextView textView = (TextView) navigationView.findViewById(R.id.firstName);
-        textView.setText(profile.getFirstName());
+        if(profile != null) {
+            View headerView = navigationView.getHeaderView(0);
+            //ImageView imageView = (ImageView) headerView.findViewById(R.id.userProfilePic);
+            //Uri uri = profile.getProfilePictureUri(64, 64);
+            //imageView.setImageURI(uri);
+            TextView textView = (TextView) headerView.findViewById(R.id.user_name);
+            textView.setText(profile.getName());
+        }
 
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -155,19 +148,10 @@ public class MainActivity extends AppCompatActivity
 
         switch (id) {
             case R.id.action_sort:
-                ArrayList<Long> jsonValues = new ArrayList<Long>();
-                for (int i = 0; i < reports.length(); i++) {
-                    try {
-                        jsonValues.add(reports.getJSONObject(i).getLong("date"));
-                        Collections.sort(jsonValues);
-                    } catch (JSONException e) {
-                        Log.d("json", e.toString());
-                    }
-                }
-                reports = new JSONArray(jsonValues);
-                mAdapter.setReports(reports);
-                mAdapter.notifyDataSetChanged();
                 break;
+            case R.id.action_settings:
+                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+                startActivity(intent);
             default:
                 break;
         }
@@ -189,6 +173,10 @@ public class MainActivity extends AppCompatActivity
                 Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(intent);
                 return true;
+            case R.id.nav_settings:
+                intent = new Intent(MainActivity.this, SettingsActivity.class);
+                startActivity(intent);
+                return true;
             default:
                 return true;
         }
@@ -208,6 +196,7 @@ public class MainActivity extends AppCompatActivity
         mAdapter.notifyDataSetChanged();
         swipeRefreshLayout.setRefreshing(false);
     }
+
     private class LoadTimeline extends AsyncTask<Void, Void, JSONArray> {
 
         Context context;
@@ -216,7 +205,7 @@ public class MainActivity extends AppCompatActivity
             this.context = context;
         }
 
-        @Override
+            @Override
         protected JSONArray doInBackground(Void... voids) {
             JSONArray jsonArray = new JSONArray();
             SyncManager s = new SyncManager(context);
@@ -235,29 +224,6 @@ public class MainActivity extends AppCompatActivity
                 Log.d("couchbase", e.toString());
             }
             return jsonArray;
-        }
-    }
-
-    class JSONComparator implements Comparator<JSONObject> {
-
-        @Override
-        public int compare(JSONObject a, JSONObject b) {
-            long valA = 0;
-            long valB = 0;
-
-            try {
-                valA = a.getLong("date");
-                valB = b.getLong("date");
-            } catch (JSONException e) {
-                Log.d("json", e.toString());
-            }
-
-            if(valA > valB)
-                return 1;
-            else if(valA < valB)
-                return -1;
-            else
-                return 0;
         }
     }
 }
