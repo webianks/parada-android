@@ -66,7 +66,6 @@ public class NewReportActivity extends AppCompatActivity implements OnMapReadyCa
                 hashMap.put("bus_code", textView1.getText().toString());
                 hashMap2.put("latitude", String.valueOf(mLocation.getLatitude()));
                 hashMap2.put("longitude", String.valueOf(mLocation.getLongitude()));
-                hashMap2.put("altitude", String.valueOf(mLocation.getAltitude()));
                 hashMap.put("location", hashMap2);
                 hashMap.put("date", new Date().getTime());
 

@@ -29,6 +29,8 @@ import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.Profile;
 import com.facebook.ProfileTracker;
 import com.facebook.login.LoginManager;
@@ -42,7 +44,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.concurrent.ExecutionException;
 
-public class MainActivity extends AppCompatActivity
+public class
+
+MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private AccessToken token;
@@ -63,7 +67,6 @@ public class MainActivity extends AppCompatActivity
         FacebookSdk.sdkInitialize(MainActivity.this);
         callbackManager = CallbackManager.Factory.create();
         ArrayList<String> permissions  = new ArrayList<String>();
-        permissions.add("public_profile");
         permissions.add("email");
         LoginManager.getInstance().logInWithReadPermissions(
                 MainActivity.this, permissions);
@@ -84,8 +87,10 @@ public class MainActivity extends AppCompatActivity
         };
         profile = Profile.getCurrentProfile();
         token = AccessToken.getCurrentAccessToken();
-        /*SyncManager s = new SyncManager(MainActivity.this);
-        s.push(token.getToken());*/
+        if(token != null) {
+            SyncManager s = new SyncManager(MainActivity.this);
+            s.push(token.getToken());
+        }
     }
 
     @Override
@@ -115,11 +120,26 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         if(profile != null) {
-            View headerView = navigationView.getHeaderView(0);
+            final View headerView = navigationView.getHeaderView(0);
             ProfilePictureView pictureView = (ProfilePictureView) headerView.findViewById(R.id.user_profile_pic);
             pictureView.setProfileId(profile.getId());
             TextView textView = (TextView) headerView.findViewById(R.id.user_name);
             textView.setText(profile.getName());
+            GraphRequest request = GraphRequest.newMeRequest(token, new GraphRequest.GraphJSONObjectCallback() {
+                @Override
+                public void onCompleted(JSONObject object, GraphResponse response) {
+                    try {
+                        TextView textView = (TextView) headerView.findViewById(R.id.user_email);
+                        textView.setText(response.getJSONObject().getString("email"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            Bundle bundle = new Bundle();
+            bundle.putString("fields", "email");
+            request.setParameters(bundle);
+            request.executeAsync();
         }
 
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
@@ -153,8 +173,8 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        /*tracker.stopTracking();
-        profileTracker.stopTracking();*/
+        tracker.stopTracking();
+        profileTracker.stopTracking();
     }
 
     @Override

@@ -78,7 +78,7 @@ public class SyncManager {
     }
     public void push(String token) {
         try {
-            url = new URL("https://parada.mossteam.com.br");
+            url = new URL("http://192.168.0.107:4984/sync_gateway");
         } catch (MalformedURLException e) {
             Log.d("couchbase", e.toString());
         }
