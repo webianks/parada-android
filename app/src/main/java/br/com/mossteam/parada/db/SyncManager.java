@@ -1,4 +1,4 @@
-package br.com.mossteam.parada;
+package br.com.mossteam.parada.db;
 
 import android.content.Context;
 import android.util.Log;
@@ -10,7 +10,6 @@ import com.couchbase.lite.Manager;
 import com.couchbase.lite.android.AndroidContext;
 import com.couchbase.lite.auth.Authenticator;
 import com.couchbase.lite.auth.AuthenticatorFactory;
-import com.couchbase.lite.auth.BasicAuthenticator;
 import com.couchbase.lite.replicator.Replication;
 
 import java.io.IOException;
@@ -76,6 +75,7 @@ public class SyncManager {
             Log.e("couchbase", e.toString());
         }
     }
+
     public void push(String token) {
         try {
             url = new URL("http://192.168.0.107:4984/sync_gateway");
@@ -92,5 +92,20 @@ public class SyncManager {
             }
         });
         push.start();
+    }
+
+    /**
+     * Permanently deletes a database's file and all its attachments.
+     * After calling this method Database reference is null.
+     */
+    public void deleteDatabase() {
+        database = getDatabase();
+        try {
+            database.delete();
+            database = null;
+        } catch (CouchbaseLiteException e) {
+            Log.e("couchbase", e.toString());
+        }
+        Log.i("couchbase", "Local database deleted.");
     }
 }

@@ -29,6 +29,8 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
+import br.com.mossteam.parada.db.SyncManager;
+
 public class ReportActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;

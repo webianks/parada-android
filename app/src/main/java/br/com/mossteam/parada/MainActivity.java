@@ -44,6 +44,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.concurrent.ExecutionException;
 
+import br.com.mossteam.parada.adapter.ReportAdapter;
+import br.com.mossteam.parada.db.SyncManager;
+
 public class
 
 MainActivity extends AppCompatActivity
@@ -222,13 +225,21 @@ MainActivity extends AppCompatActivity
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
-        Intent intent;
+        Intent intent = null;
 
         switch (id) {
             /*case R.id.nav_profile:
                 return true;*/
             case R.id.nav_settings:
                 intent = new Intent(MainActivity.this, SettingsActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.nav_send_feedback:
+                intent = new Intent(MainActivity.this, FeedbackActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.nav_help:
+                intent = new Intent(MainActivity.this, HelpActivity.class);
                 startActivity(intent);
                 return true;
             default:
@@ -245,7 +256,7 @@ MainActivity extends AppCompatActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        /*callbackManager.onActivityResult(requestCode, resultCode, data);*/
+        callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
     public void reloadTimeline() {
@@ -261,6 +272,10 @@ MainActivity extends AppCompatActivity
         mAdapter.setReports(reports);
         mAdapter.notifyDataSetChanged();
         swipeRefreshLayout.setRefreshing(false);
+    }
+
+    private void logOut() {
+        LoginManager.getInstance().logOut();
     }
 
     private class LoadTimeline extends AsyncTask<Void, Void, JSONArray> {

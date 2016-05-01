@@ -1,4 +1,4 @@
-package br.com.mossteam.parada;
+package br.com.mossteam.parada.model;
 
 /**
  * @author Willian Paixao <willian@ufpa.br>

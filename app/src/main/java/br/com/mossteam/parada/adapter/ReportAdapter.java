@@ -1,4 +1,4 @@
-package br.com.mossteam.parada;
+package br.com.mossteam.parada.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +15,9 @@ import org.json.JSONException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+
+import br.com.mossteam.parada.R;
+import br.com.mossteam.parada.ReportActivity;
 
 public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder> {
 

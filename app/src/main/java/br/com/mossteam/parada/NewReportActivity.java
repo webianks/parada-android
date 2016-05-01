@@ -23,13 +23,12 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
+
+import br.com.mossteam.parada.db.SyncManager;
 
 public class NewReportActivity extends AppCompatActivity implements OnMapReadyCallback {
 
