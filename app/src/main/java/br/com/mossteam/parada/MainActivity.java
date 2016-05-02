@@ -47,9 +47,7 @@ import java.util.concurrent.ExecutionException;
 import br.com.mossteam.parada.adapter.ReportAdapter;
 import br.com.mossteam.parada.db.SyncManager;
 
-public class
-
-MainActivity extends AppCompatActivity
+public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private AccessToken token;
@@ -122,8 +120,8 @@ MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        final View headerView = navigationView.getHeaderView(0);
         if(profile != null) {
-            final View headerView = navigationView.getHeaderView(0);
             ProfilePictureView pictureView = (ProfilePictureView) headerView.findViewById(R.id.user_profile_pic);
             pictureView.setProfileId(profile.getId());
             TextView textView = (TextView) headerView.findViewById(R.id.user_name);
@@ -143,6 +141,17 @@ MainActivity extends AppCompatActivity
             bundle.putString("fields", "email");
             request.setParameters(bundle);
             request.executeAsync();
+        }
+        else {
+            TextView textView = (TextView) headerView.findViewById(R.id.user_name);
+            textView.setText(R.string.sign_in);
+            textView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                }
+            });
         }
 
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);

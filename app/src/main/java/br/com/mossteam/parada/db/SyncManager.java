@@ -25,9 +25,10 @@ import java.util.HashMap;
 public class SyncManager {
 
     private final String DB_NAME = "parada";
+    private final String syncURL = "http://192.168.0.107:4984/sync_gateway";
     private Database database = null;
     private Manager manager = null;
-    private Context context;
+    private Context context = null;
     private URL url;
 
     public SyncManager(Context context) {
@@ -36,9 +37,13 @@ public class SyncManager {
         database = getDatabase();
     }
 
+    /**
+     * Creates a new Couchbase Document object
+     *
+     * @return A new and empty document
+     */
     public Document createDocument() {
-        Document document = getDatabase().createDocument();
-        return document;
+        return getDatabase().createDocument();
     }
 
     public Database getDatabase() {
@@ -57,7 +62,7 @@ public class SyncManager {
         return database.getExistingDocument(documentId);
     }
 
-    public Manager getManager() {
+    private Manager getManager() {
         try {
             if (manager == null) {
                 manager = new Manager(new AndroidContext(context), Manager.DEFAULT_OPTIONS);
@@ -68,19 +73,30 @@ public class SyncManager {
         return manager;
     }
 
+    /**
+     *
+     * @param document Document to be updated.
+     * @param updatedProperties Map with new set of properties.
+     */
     public void updateDocument(Document document, HashMap<String, Object> updatedProperties) {
         try {
             document.putProperties(updatedProperties);
         } catch (CouchbaseLiteException e) {
-            Log.e("couchbase", e.toString());
+            Log.e("Couchbase", e.toString());
         }
     }
 
+    /**
+     * Pushes local Documents to the Couchbase Server using a process called
+     * Replication.
+     *
+     * @param token Facebook's access token.
+     */
     public void push(String token) {
         try {
-            url = new URL("http://192.168.0.107:4984/sync_gateway");
+            url = new URL(syncURL);
         } catch (MalformedURLException e) {
-            Log.d("couchbase", e.toString());
+            Log.e("Couchbase", e.toString());
         }
         Replication push = getDatabase().createPushReplication(url);
         Authenticator auth = AuthenticatorFactory.createFacebookAuthenticator(token);
@@ -88,7 +104,7 @@ public class SyncManager {
         push.addChangeListener(new Replication.ChangeListener() {
             @Override
             public void changed(Replication.ChangeEvent event) {
-
+                Log.d("Couchbase", event.toString());
             }
         });
         push.start();
@@ -104,8 +120,30 @@ public class SyncManager {
             database.delete();
             database = null;
         } catch (CouchbaseLiteException e) {
-            Log.e("couchbase", e.toString());
+            Log.e("Couchbase", e.toString());
         }
-        Log.i("couchbase", "Local database deleted.");
+        Log.i("Couchbase", "Local database deleted.");
     }
+
+    /*public void assignOwnerToListsIfNeeded(String userId) {
+        Query query = getDatabase().createAllDocumentsQuery();
+        QueryEnumerator queryEnumerator = null;
+        try {
+            queryEnumerator = query.run();
+            if (queryEnumerator == null)
+                return;
+            while (queryEnumerator.hasNext()) {
+                Document document = queryEnumerator.next().getDocument();
+                String owner = (String) document.getProperty("owner");
+                if (owner != null)
+                    continue;
+                HashMap<String, Object> properties = new HashMap<String, Object>();
+                properties.putAll(document.getProperties());
+                properties.put("owner", userId);
+                document.putProperties(properties);
+            }
+        } catch (CouchbaseLiteException e) {
+            e.printStackTrace();
+        }
+    }*/
 }
