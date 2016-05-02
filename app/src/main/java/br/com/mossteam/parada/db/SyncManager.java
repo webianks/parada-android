@@ -1,6 +1,8 @@
 package br.com.mossteam.parada.db;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 
 import com.couchbase.lite.CouchbaseLiteException;
@@ -52,7 +54,7 @@ public class SyncManager {
                 manager = getManager();
                 database = manager.getDatabase(DB_NAME);
             } catch (Exception e) {
-                Log.d("couchbase", e.toString());
+                Log.e("Couchbase", e.toString());
             }
         }
         return database;
@@ -68,7 +70,7 @@ public class SyncManager {
                 manager = new Manager(new AndroidContext(context), Manager.DEFAULT_OPTIONS);
             }
         } catch (IOException e) {
-            Log.d("couchbase", e.toString());
+            Log.e("Couchbase", e.toString());
         }
         return manager;
     }
@@ -93,6 +95,12 @@ public class SyncManager {
      * @param token Facebook's access token.
      */
     public void push(String token) {
+
+        // Check for internet connection
+        if(!isConnected()) {
+            return;
+        }
+
         try {
             url = new URL(syncURL);
         } catch (MalformedURLException e) {
@@ -107,6 +115,7 @@ public class SyncManager {
                 Log.d("Couchbase", event.toString());
             }
         });
+        Log.i("Couchbase", "Starting push replication.");
         push.start();
     }
 
@@ -146,4 +155,15 @@ public class SyncManager {
             e.printStackTrace();
         }
     }*/
+
+    /**
+     *
+     * @return true if there is internet connection
+     */
+    private boolean isConnected() {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo info = cm.getActiveNetworkInfo();
+        return info != null &&
+                info.isConnectedOrConnecting();
+    }
 }

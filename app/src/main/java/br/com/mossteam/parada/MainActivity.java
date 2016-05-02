@@ -41,6 +41,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.concurrent.ExecutionException;
 
@@ -219,6 +221,7 @@ public class MainActivity extends AppCompatActivity
             case R.id.action_settings:
                 Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
                 startActivity(intent);
+                break;
             default:
                 break;
         }
@@ -278,6 +281,7 @@ public class MainActivity extends AppCompatActivity
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
+
         mAdapter.setReports(reports);
         mAdapter.notifyDataSetChanged();
         swipeRefreshLayout.setRefreshing(false);
@@ -287,7 +291,7 @@ public class MainActivity extends AppCompatActivity
         LoginManager.getInstance().logOut();
     }
 
-    private class LoadTimeline extends AsyncTask<Void, Void, JSONArray> {
+    class LoadTimeline extends AsyncTask<Void, Void, JSONArray> {
 
         Context context;
 
@@ -295,9 +299,10 @@ public class MainActivity extends AppCompatActivity
             this.context = context;
         }
 
-            @Override
+        @Override
         protected JSONArray doInBackground(Void... voids) {
-            JSONArray jsonArray = new JSONArray();
+            ArrayList<JSONObject> list = new ArrayList<JSONObject>();
+            JSONArray array = new JSONArray();
             SyncManager s = new SyncManager(context);
             Query query = s.getDatabase().createAllDocumentsQuery();
             try {
@@ -306,14 +311,42 @@ public class MainActivity extends AppCompatActivity
                 for (int i = 0;rowIterator.hasNext(); i++) {
                     QueryRow row = rowIterator.next();
                     Document document = s.getDocument(row.getDocumentId());
-                    jsonArray.put(i, new JSONObject(document.getProperties()));
+                    array.put(i, new JSONObject(document.getProperties()));
                 }
             } catch (CouchbaseLiteException e) {
                 Log.d("couchbase", e.toString());
             } catch (JSONException e) {
                 Log.d("couchbase", e.toString());
             }
-            return jsonArray;
+
+            for(int i = 0; i < array.length(); i++) {
+                try {
+                    list.add(array.getJSONObject(i));
+                } catch (JSONException e) {
+                    Log.e("json", e.toString());
+                }
+            }
+            Collections.sort(list, new JSONComparator());
+
+            return new JSONArray(list);
+        }
+    }
+
+    class JSONComparator implements Comparator<JSONObject> {
+
+        @Override
+        public int compare(JSONObject j1, JSONObject j2) {
+            String s1 = null;
+            String s2 = null;
+
+            try {
+                s1 = j1.getString("bus_code");
+                s2 = j2.getString("bus_code");
+            } catch (JSONException e) {
+                Log.e("json", e.toString());
+            }
+
+            return s1.compareTo(s2);
         }
     }
 }

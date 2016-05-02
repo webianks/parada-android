@@ -71,15 +71,26 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        holder.view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, ReportActivity.class);
+                try {
+                    intent.putExtra("_id", reports.getJSONObject(position).getString("_id"));
+                    Log.d("json", reports.getJSONObject(position).getString("_id"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                context.startActivity(intent);
+            }
+        });
         holder.mTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, ReportActivity.class);
                 try {
-                    intent.putExtra("_id", reports.getJSONObject(position)
-                            .getString("_id"));
-                    Log.d("json", reports.getJSONObject(position).getString
-                            ("_, id"));
+                    intent.putExtra("_id", reports.getJSONObject(position).getString("_id"));
+                    Log.d("json", reports.getJSONObject(position).getString("_id"));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

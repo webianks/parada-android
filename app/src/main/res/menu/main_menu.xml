@@ -8,8 +8,8 @@
         android:icon="@drawable/ic_sort_white_48dp"
         android:orderInCategory="99"
         android:title="@string/action_sort"
-        app:showAsAction="always"
-        android:visible="false" />
+        android:visible="false"
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/action_settings"
