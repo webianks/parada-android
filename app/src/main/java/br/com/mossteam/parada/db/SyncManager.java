@@ -1,5 +1,6 @@
 package br.com.mossteam.parada.db;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -106,7 +107,7 @@ public class SyncManager {
         } catch (MalformedURLException e) {
             Log.e("Couchbase", e.toString());
         }
-        Replication push = getDatabase().createPushReplication(url);
+        final Replication push = getDatabase().createPushReplication(url);
         Authenticator auth = AuthenticatorFactory.createFacebookAuthenticator(token);
         push.setAuthenticator(auth);
         push.addChangeListener(new Replication.ChangeListener() {
@@ -117,6 +118,20 @@ public class SyncManager {
         });
         Log.i("Couchbase", "Starting push replication.");
         push.start();
+        final ProgressDialog progressDialog = ProgressDialog.show(context, "Please wait...", "Syncing", false);
+        push.addChangeListener(new Replication.ChangeListener() {
+            @Override
+            public void changed(Replication.ChangeEvent event) {
+                boolean active = push.getStatus() == Replication.ReplicationStatus.REPLICATION_ACTIVE;
+                if(!active) {
+                    progressDialog.dismiss();
+                } else {
+                    progressDialog.setMax(push.getCompletedChangesCount());
+                    progressDialog.setProgress(push.getChangesCount());
+                }
+
+            }
+        });
     }
 
     /**

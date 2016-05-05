@@ -1,5 +1,6 @@
 package br.com.mossteam.parada;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -54,7 +55,7 @@ public class MainActivity extends AppCompatActivity
 
     private AccessToken token;
     private AccessTokenTracker tracker;
-    private CallbackManager callbackManager;
+    // private CallbackManager callbackManager;
     private JSONArray reports;
     private Profile profile;
     private ProfileTracker profileTracker;
@@ -68,16 +69,17 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
 
         FacebookSdk.sdkInitialize(MainActivity.this);
-        callbackManager = CallbackManager.Factory.create();
+        /*callbackManager = CallbackManager.Factory.create();
         ArrayList<String> permissions  = new ArrayList<String>();
         permissions.add("email");
         LoginManager.getInstance().logInWithReadPermissions(
-                MainActivity.this, permissions);
+                MainActivity.this, permissions);*/
         tracker = new AccessTokenTracker() {
             @Override
             protected void onCurrentAccessTokenChanged(
                     AccessToken oldAccessToken,
                     AccessToken currentAccessToken) {
+
             }
         };
         profileTracker = new ProfileTracker() {
@@ -268,7 +270,7 @@ public class MainActivity extends AppCompatActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        callbackManager.onActivityResult(requestCode, resultCode, data);
+        // callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
     public void reloadTimeline() {
