@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:padding="16dp"
-            android:textColor="#aaa"
+            android:textColor="#888"
             android:text="@string/privacy_policy"
             android:id="@+id/privacy_policy"
             android:layout_gravity="left|bottom"/>
