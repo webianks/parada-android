@@ -1,6 +1,5 @@
 package br.com.mossteam.parada;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -28,7 +27,6 @@ import com.couchbase.lite.QueryEnumerator;
 import com.couchbase.lite.QueryRow;
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
-import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
@@ -63,6 +61,7 @@ public class MainActivity extends AppCompatActivity
     private ReportAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private TextView mTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -158,6 +157,7 @@ public class MainActivity extends AppCompatActivity
             });
         }
 
+        mTextView = (TextView) findViewById(R.id.no_reports);
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -173,6 +173,10 @@ public class MainActivity extends AppCompatActivity
         mAdapter = new ReportAdapter(MainActivity.this, reports);
         mRecyclerView.setAdapter(mAdapter);
         reloadTimeline();
+        if(reports.length() == 0) {
+            swipeRefreshLayout.setVisibility(View.GONE);
+            mTextView.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
