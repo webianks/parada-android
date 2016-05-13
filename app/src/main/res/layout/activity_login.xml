@@ -18,7 +18,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal|bottom"
-            android:layout_marginBottom="96dp"/>
+            android:layout_marginBottom="96dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:padding="16dp"
+            android:textColor="#aaa"
+            android:text="@string/skip"
+            android:id="@+id/skip_log_in"
+            android:layout_gravity="center_horizontal|bottom"
+            android:layout_marginBottom="48dp" />
 
         <TextView
             android:layout_width="wrap_content"

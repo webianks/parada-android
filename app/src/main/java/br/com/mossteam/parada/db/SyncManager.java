@@ -28,7 +28,7 @@ import java.util.HashMap;
 public class SyncManager {
 
     private final String DB_NAME = "parada";
-    private final String syncURL = "http://192.168.0.107:4984/sync_gateway";
+    private final String syncURL = "http://gw.parada.mossteam.com.br:4984/sync_gateway";
     private Database database = null;
     private Manager manager = null;
     private Context context = null;
@@ -118,6 +118,7 @@ public class SyncManager {
         });
         Log.i("Couchbase", "Starting push replication.");
         push.start();
+
         final ProgressDialog progressDialog = ProgressDialog.show(context, "Please wait...", "Syncing", false);
         push.addChangeListener(new Replication.ChangeListener() {
             @Override
@@ -129,7 +130,6 @@ public class SyncManager {
                     progressDialog.setMax(push.getCompletedChangesCount());
                     progressDialog.setProgress(push.getChangesCount());
                 }
-
             }
         });
     }
