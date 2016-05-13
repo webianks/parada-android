@@ -1,11 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="action_add_a_photo">Adicionar uma foto</string>
-    <string name="action_edit_location"></string>
+    <string name="action_edit_location">Alterar localização</string>
     <string name="bus_code">Código do ônibus: </string>
     <string name="action_send">Enviar</string>
     <string name="action_settings">Configurações</string>
     <string name="title_activity_new_report">Nova denúncia</string>
     <string name="title_activity_maps">Mapa</string>
     <string name="date">Data:</string>
+    <string name="about_us">Sobre nós</string>
+    <string name="account">Conta</string>
+    <string name="action_delete">Remover</string>
+    <string name="action_filter">Filtrar</string>
+    <string name="action_my_location">Minha localização</string>
+    <string name="action_search">Procurar</string>
+    <string name="action_share">Compartilhar</string>
+    <string name="action_sort">Ordenar</string>
+    <string name="description">Descrição:</string>
+    <string name="title_activity_settings">Configurações</string>
+    <string name="title_activity_report">Denúncia</string>
+    <string name="title_activity_login">Entrar</string>
+    <string name="title_activity_help">Ajuda</string>
+    <string name="title_activity_feedback">Feedback</string>
+    <string name="title">Título</string>
+    <string name="support">Suporte</string>
+    <string name="sign_in">Entrar</string>
+    <string name="settings">Configurações</string>
+    <string name="send_feedback">Enviar feedback</string>
+    <string name="profile">Perfil</string>
+    <string name="privacy_policy"></string>
+    <string name="help_hint"></string>
 </resources>
