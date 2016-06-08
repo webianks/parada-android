@@ -2,10 +2,13 @@ package br.com.mossteam.parada;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -91,7 +94,7 @@ public class MainActivity extends AppCompatActivity
         };
         profile = Profile.getCurrentProfile();
         token = AccessToken.getCurrentAccessToken();
-        if(token != null) {
+        if(token != null && isConnected()) {
             SyncManager s = new SyncManager(MainActivity.this);
             s.push(token.getToken());
         }
@@ -162,7 +165,13 @@ public class MainActivity extends AppCompatActivity
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                reloadTimeline();
+                if(!isConnected()) {
+                    Snackbar snackbar = Snackbar.make(findViewById(R.id.swiperefresh),"Erro de conexão", Snackbar.LENGTH_LONG);
+                    snackbar.show();
+                    return;
+                } else {
+                    reloadTimeline();
+                }
             }
         });
 
@@ -204,6 +213,7 @@ public class MainActivity extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+            finish();
         }
     }
 
@@ -252,14 +262,14 @@ public class MainActivity extends AppCompatActivity
                 intent = new Intent(MainActivity.this, SettingsActivity.class);
                 startActivity(intent);
                 return true;
-            case R.id.nav_send_feedback:
+            /*case R.id.nav_send_feedback:
                 intent = new Intent(MainActivity.this, FeedbackActivity.class);
                 startActivity(intent);
-                return true;
-            case R.id.nav_help:
+                return true;*/
+            /*case R.id.nav_help:
                 intent = new Intent(MainActivity.this, HelpActivity.class);
                 startActivity(intent);
-                return true;
+                return true;*/
             default:
                 return true;
         }
@@ -295,6 +305,13 @@ public class MainActivity extends AppCompatActivity
 
     private void logOut() {
         LoginManager.getInstance().logOut();
+    }
+
+    private boolean isConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo info = cm.getActiveNetworkInfo();
+        return info != null &&
+                info.isConnectedOrConnecting();
     }
 
     class LoadTimeline extends AsyncTask<Void, Void, JSONArray> {

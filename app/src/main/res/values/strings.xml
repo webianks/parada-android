@@ -23,8 +23,8 @@
     <string name="profile">Profile</string>
     <string name="settings">Settings</string>
     <string name="help_description">
-        I can\'t count how many times the bus didn\'t stop to me, for a unknown
-        number of reasons. It\'s a fact that you can call to a hotline and make
+        I cannot count how many times the bus did not stop to me, for a unknown
+        number of reasons. It is a fact that you can call to a hotline and make
         a formal complain, but I know no person who do that.
         Parada was made to expose such problem. A simple and fast way to report
         when a bus drive leaves you at the bus stop, feeling like a piece of

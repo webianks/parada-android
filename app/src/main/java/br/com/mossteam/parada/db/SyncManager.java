@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
 
 import com.couchbase.lite.CouchbaseLiteException;
@@ -28,7 +29,7 @@ import java.util.HashMap;
 public class SyncManager {
 
     private final String DB_NAME = "parada";
-    private final String syncURL = "http://gw.parada.mossteam.com.br:4984/sync_gateway";
+    private final String syncURL = "http://gw.parada.me:4984/sync_gateway";
     private Database database = null;
     private Manager manager = null;
     private Context context = null;
