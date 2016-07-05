@@ -1,6 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'willianATgameboy'
+            storeFile file('/home/willian/dev/dotfiles/android.jks')
+        }
+    }
     compileSdkVersion 24
     buildToolsVersion "24.0.0"
     defaultConfig {
@@ -15,6 +21,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
         }
     }
     dexOptions {
@@ -32,6 +39,9 @@ android {
         exclude 'META-INF/NOTICE'
     }
 }
+
+
+
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
