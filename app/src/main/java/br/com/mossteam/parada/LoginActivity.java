@@ -26,6 +26,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void login() {
         callbackManager = CallbackManager.Factory.create();
+        loginButton = (LoginButton) findViewById(R.id.login_button);
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
@@ -54,7 +55,6 @@ public class LoginActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         setContentView(R.layout.activity_login);
-        loginButton = (LoginButton) findViewById(R.id.login_button);
         TextView skipLogIn = (TextView) findViewById(R.id.skip_log_in);
         assert skipLogIn != null;
         skipLogIn.setOnClickListener(new View.OnClickListener() {

@@ -17,6 +17,27 @@ public class SettingsActivity extends AppCompatActivity {
     private CallbackManager callbackManager;
     private LoginButton loginButton;
 
+    private void login() {
+        callbackManager = CallbackManager.Factory.create();
+        loginButton = (LoginButton) findViewById(R.id.login_button);
+        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                Log.d("Facebook", loginResult.toString());
+            }
+
+            @Override
+            public void onCancel() {
+                Log.d("Facebook", "Login process cancelled by user.");
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                Log.d("Facebook", error.toString());
+            }
+        });
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,30 +47,11 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.title_activity_settings);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        callbackManager = CallbackManager.Factory.create();
-        loginButton = (LoginButton) findViewById(R.id.login_button);
-        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                Log.d("facebook", loginResult.toString());
-            }
-
-            @Override
-            public void onCancel() {
-
-            }
-
-            @Override
-            public void onError(FacebookException error) {
-
-            }
-        });
+        login();
     }
 
     @Override
@@ -61,7 +63,6 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 }

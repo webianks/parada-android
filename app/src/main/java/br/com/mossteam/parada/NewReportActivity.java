@@ -1,6 +1,7 @@
 package br.com.mossteam.parada;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -14,6 +15,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.couchbase.lite.Document;
@@ -46,23 +49,28 @@ public class NewReportActivity extends AppCompatActivity implements OnMapReadyCa
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        final Date date = new Date();
+        Date date = new Date();
         Locale.setDefault(new Locale("pt", "BR"));
-        final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy " +
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy " +
                 "HH:mm:ss", Locale.getDefault());
-        final TextView textView = (TextView) findViewById(R.id.date);
+        TextView textView = (TextView) findViewById(R.id.date);
         textView.setText(dateFormat.format(date));
+
+        EditText editText = (EditText) findViewById(R.id.bus_code);
+        editText.requestFocus();
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         assert fab != null;
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                TextView textView1 = (TextView) findViewById(R.id.bus_code);
+                TextView textView = (TextView) findViewById(R.id.bus_code);
                 HashMap<String, Object> hashMap = new HashMap<String, Object>();
                 HashMap<String, Object> hashMap2 = new HashMap<String, Object>();
 
-                hashMap.put("bus_code", textView1.getText().toString());
+                hashMap.put("bus_code", textView.getText().toString());
                 hashMap2.put("latitude", String.valueOf(mLocation.getLatitude()));
                 hashMap2.put("longitude", String.valueOf(mLocation.getLongitude()));
                 hashMap.put("location", hashMap2);

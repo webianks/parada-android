@@ -30,6 +30,7 @@ import com.couchbase.lite.QueryEnumerator;
 import com.couchbase.lite.QueryRow;
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
+import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
@@ -56,7 +57,7 @@ public class MainActivity extends AppCompatActivity
 
     private AccessToken token;
     private AccessTokenTracker tracker;
-    // private CallbackManager callbackManager;
+    private CallbackManager callbackManager;
     private JSONArray reports;
     private Profile profile;
     private ProfileTracker profileTracker;
@@ -66,16 +67,9 @@ public class MainActivity extends AppCompatActivity
     private SwipeRefreshLayout swipeRefreshLayout;
     private TextView mTextView;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
+    private void loadFacebookObjects() {
         FacebookSdk.sdkInitialize(MainActivity.this);
-        /*callbackManager = CallbackManager.Factory.create();
-        ArrayList<String> permissions  = new ArrayList<String>();
-        permissions.add("email");
-        LoginManager.getInstance().logInWithReadPermissions(
-                MainActivity.this, permissions);*/
+        callbackManager = CallbackManager.Factory.create();
         tracker = new AccessTokenTracker() {
             @Override
             protected void onCurrentAccessTokenChanged(
@@ -92,12 +86,14 @@ public class MainActivity extends AppCompatActivity
 
             }
         };
-        profile = Profile.getCurrentProfile();
         token = AccessToken.getCurrentAccessToken();
-        if(token != null && isConnected()) {
-            SyncManager s = new SyncManager(MainActivity.this);
-            s.push(token.getToken());
-        }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        loadFacebookObjects();
     }
 
     @Override
@@ -127,26 +123,12 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         final View headerView = navigationView.getHeaderView(0);
+        profile = Profile.getCurrentProfile();
         if(profile != null) {
             ProfilePictureView pictureView = (ProfilePictureView) headerView.findViewById(R.id.user_profile_pic);
             pictureView.setProfileId(profile.getId());
             TextView textView = (TextView) headerView.findViewById(R.id.user_name);
             textView.setText(profile.getName());
-            GraphRequest request = GraphRequest.newMeRequest(token, new GraphRequest.GraphJSONObjectCallback() {
-                @Override
-                public void onCompleted(JSONObject object, GraphResponse response) {
-                    try {
-                        TextView textView = (TextView) headerView.findViewById(R.id.user_email);
-                        textView.setText(response.getJSONObject().getString("email"));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-            Bundle bundle = new Bundle();
-            bundle.putString("fields", "email");
-            request.setParameters(bundle);
-            request.executeAsync();
         }
         else {
             TextView textView = (TextView) headerView.findViewById(R.id.user_name);

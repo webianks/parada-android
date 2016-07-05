@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="action_add_a_photo">Adicionar uma foto</string>
+    <string name="action_add_a_photo">Você não possui </string>
     <string name="action_edit_location">Alterar localização</string>
     <string name="bus_code">Código do ônibus: </string>
     <string name="action_send">Enviar</string>
@@ -28,6 +28,11 @@
     <string name="settings">Configurações</string>
     <string name="send_feedback">Enviar feedback</string>
     <string name="profile">Perfil</string>
-    <string name="privacy_policy"></string>
-    <string name="help_hint"></string>
+    <string name="privacy_policy">Ao registrar, você aceita todos os termos do serivço</string>
+    <string name="help_hint">Dê seu feedback sobre o aplicativo...</string>
+    <string name="help">Ajuda</string>
+    <string name="navigation_drawer_open">Abrir menu lateral</string>
+    <string name="navigation_drawer_close">Fechar menu lateral</string>
+    <string name="skip">Ignorar</string>
+    <string name="no_reports">Você não possui denúncias</string>
 </resources>

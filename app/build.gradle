@@ -4,7 +4,7 @@ android {
     signingConfigs {
         config {
             keyAlias 'willianATgameboy'
-            storeFile file('/home/willian/dev/dotfiles/android.jks')
+            storeFile file('android.jks')
         }
     }
     compileSdkVersion 24
@@ -16,10 +16,12 @@ android {
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
+        signingConfig signingConfigs.config
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.config
         }
@@ -39,9 +41,6 @@ android {
         exclude 'META-INF/NOTICE'
     }
 }
-
-
-
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
