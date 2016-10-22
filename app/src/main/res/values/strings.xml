@@ -28,4 +28,12 @@
     <string name="no_account">I don\'t have an account</string>
     <string name="forgot_password">Forgot my password</string>
     <string name="terms_of_use">Terms of use</string>
+    <string name="Cancel">Cancel</string>
+
+
+
+    <!-- related to location -->
+    <string name="gps_network_not_enabled">Please enable location from settings to see the nearby restaurants.</string>
+    <string name="open_location_settings">Settings</string>
+
 </resources>
